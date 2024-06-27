@@ -1,6 +1,18 @@
 # ClaimsHawkAI
 
 A app the takes transcripts from politicians and world leader's speechs and use ai model(from hugging face) to get the claims made by them i.e a politicians says "I will reduce the unemployment rate" or "I will reduce the waste produced by the company". It also provides ways to validate claim with data i.e "employment rate after election" , "waste volume after claim"
+## How to run
+
+### Setup the environment
+`python -m venv venv`
+
+On Windows: <br>
+`.\venv\Scripts\activate`
+<br>
+On Linux: <br>
+`source venv/bin/activate`
+
+`pip install -r requirements.txt`
 
 ## MVPs
 - Get claims from transcripts of youtube made by the politicians/world leader and get Vector Embeddings for the transcript
