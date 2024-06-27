@@ -13,5 +13,5 @@ A app the takes transcripts from politicians and world leader's speechs and use 
 - Provide metrics that can validate a non-vague claim 
 - If data is available show whether claim made is being satisfied and to what degree
 - Metrics to evaluate person success based on the type(vague/non-vague) of claims and successfully achieved claims
-- scraps posts made on social media and other outlets and extract the claims made from this sources 
-- target different industries and their heads/leaders i.e. FDA and how they are allowing so many banned substances in our foods, sports e.t.c
+- Scraps posts made on social media and other outlets and extract the claims made from this sources 
+- Target different industries and their heads/leaders i.e. FDA and how they are allowing so many banned substances in our foods, sports e.t.c
