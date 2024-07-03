@@ -11,7 +11,15 @@ text = re.sub(r'\(.*?\)', '', text)
 # Replace newlines with spaces to join multi-line sentences
 text = re.sub(r'\n+', ' ', text)
 
+
 # New regex pattern for sentence splitting
+"""
+A regular expression pattern for splitting text into sentences.
+
+The pattern matches the following cases:
+- A period, exclamation mark, or question mark followed by a space and the start of a new sentence (capitalized word)
+- A period, exclamation mark, or question mark followed by a quote and then either a space and a capitalized word, or the end of the string
+"""
 sentence_pattern = r'(?<=[.!?])\s+(?=[A-Z])|(?<=[.!?]")(?:\s+(?=[A-Z][a-z])|$)'
 
 # Split the text into sentences

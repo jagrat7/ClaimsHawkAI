@@ -4,13 +4,30 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 import re, datetime
-
+import json
 load_dotenv()
 
 # Set up YouTube API client
 api_key = os.getenv('YOUTUBE_API_KEY')
 youtube = build('youtube', 'v3', developerKey=api_key)
-video_id = 'qqG96G8YdcE'
+# video_id=''
+
+def load_videos():
+    try:
+        with open('data/videos.json', 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {"videos": []}
+
+def save_videos(data):
+    with open('data/videos.json', 'w') as f:
+        json.dump(data, f, indent=2)
+
+def mark_as_processed(data):
+    if video['id'] == video_id:
+        video['processed'] = True       
+    save_videos(data)
+
 
 def get_video_info(video_id):
     try:
@@ -33,7 +50,10 @@ def get_video_info(video_id):
 
 def get_captions(video_id):
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        if YouTubeTranscriptApi.get_transcript(video_id, languages=['en-US']):
+            transcript = YouTubeTranscriptApi.get_transcript(video_id,languages=['en-US'])
+        else:
+            transcript = YouTubeTranscriptApi.get_transcript(video_id,preserve_formatting=True)
         return transcript
     except Exception as e:
         print(f"Error fetching captions: {str(e)}")
@@ -42,23 +62,40 @@ def get_captions(video_id):
 def sanitize_filename(filename):
     # Remove invalid characters and replace spaces with underscores
     return re.sub(r'[^\w\-_\. ]', '', filename).replace(' ', '_')
+def remove_sound_effects(text):
+    # Remove text within parentheses or square brackets
+    return re.sub(r'\([^)]*\)|\[[^]]*\]', '', text).strip()
 
-def save_to_csv(video_id, video_title,video_date, captions):
+def save_to_csv(video_id, video_title, video_date, captions):
     data = []
+    current_minute = 0
+    current_text = ""
+    min_words = 1  # Minimum number of words for a row to be included
 
-    for i in range(len(captions)):
-        # Get the current entry
-        current_entry = captions[i]
-        # Create a unique ID based on the timestamp of the current entry
-        id = f"{video_id}_{int(current_entry['start'] )}"
+    for entry in captions:
+        start_time = entry['start']
+        text = remove_sound_effects(entry['text'])
         
-        # Add the entry to the data
+        if start_time // 60 > current_minute:
+            if current_text and len(current_text.split()) >= min_words:
+                data.append({
+                    'id': f"{video_id}_{current_minute}",
+                    # 'timestamp': current_minute * 60,
+                    'context': current_text.strip()
+                })
+            current_minute = start_time // 60
+            current_text = text
+        else:
+            current_text += " " + text
+    
+    # Add the last minute if there's any remaining text
+    if current_text and len(current_text.split()) >= min_words:
         data.append({
-            'id': id,
-            'timestamp': current_entry['start'],
-            'duration': current_entry['duration'],
-            'context':  current_entry['text'],
+            'id': f"{video_id}_{current_minute}",
+            # 'timestamp': current_minute * 60,
+            'context': current_text.strip()
         })
+
     df = pd.DataFrame(data)
 
     # Sanitize the video title for use as a filename
@@ -73,7 +110,7 @@ def save_full_transcript(video_title, video_date, captions):
     safe_title = sanitize_filename(f"{video_title}_{video_date}")
     filename = f"data/{safe_title}.txt"
     
-    full_transcript = " ".join([entry['text'] for entry in captions])
+    full_transcript = " ".join([remove_sound_effects(entry['text']) for entry in captions])
     
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(full_transcript)
@@ -81,14 +118,45 @@ def save_full_transcript(video_title, video_date, captions):
     print(f"Full transcript saved to {filename}")
 
 
-captions = get_captions(video_id)
-video_title, video_date = get_video_info(video_id)
+videos_data = load_videos()
 
-if captions:
-    print(f"Video Title: {video_title}")
-    print(f"Video Date: {video_date}")
-    df = save_to_csv(video_id, video_title, video_date, captions)
-    save_full_transcript(video_title, video_date, captions)
-    print(df.head())  # Display the first few rows of the DataFrame
-else:
-    print("Failed to retrieve captions.")
+for video in videos_data['videos']:
+    video_id = video['id']
+    
+    # Skip if already processed
+    if video.get('processed', False):
+        print(f"Skipping already processed video: {video['title']}")
+        continue
+    
+    captions = get_captions(video_id)
+    video_title, video_date = get_video_info(video_id)
+    
+    if captions:
+        print(f"Processing Video: {video_title}")
+        print(f"Video Date: {video_date}")
+        df = save_to_csv(video_id, video_title, video_date, captions)
+        save_full_transcript(video_title, video_date, captions)
+        print(df.head())  # Display the first few rows of the DataFrame
+        
+        # Mark as processed
+        mark_as_processed(video)
+    else:
+        print(f"Failed to retrieve captions for video ID: {video_id}")
+
+# Save the updated video data
+save_videos(videos_data)
+
+
+
+
+# captions = get_captions(video_id)
+# video_title, video_date = get_video_info(video_id)
+
+# if captions:
+#     print(f"Video Title: {video_title}")
+#     print(f"Video Date: {video_date}")
+#     df = save_to_csv(video_id, video_title, video_date, captions)
+#     save_full_transcript(video_title, video_date, captions)
+#     print(df.head())  # Display the first few rows of the DataFrame
+# else:
+#     print("Failed to retrieve captions.")
