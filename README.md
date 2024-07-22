@@ -1,6 +1,6 @@
 # ClaimsHawkAI
 
-A app the takes transcripts from politicians and world leader's speechs and use ai model(from hugging face) to get the claims made by them i.e a politicians says "I will reduce the unemployment rate" or "I will reduce the waste produced by the company". It also provides ways to validate claim with data i.e "employment rate after election" , "waste volume after claim"
+A app the takes transcripts from politicians and world leader speechs and use ai model(from hugging face) to get the claims made by them i.e a politicians says "I will reduce the unemployment rate" or "I will reduce the waste produced by the company". It also provides ways to validate claim with data i.e "employment rate after election" , "waste volume after claim"
 ## How to run
 
 ### Setup the environment
@@ -22,8 +22,9 @@ On Linux: <br>
 
 
 ## Future features
+- add timestamp to extracted captions so we can extract at the timestamp in the youtube video
 - Provide metrics that can validate a non-vague claim 
 - If data is available show whether claim made is being satisfied and to what degree
-- Metrics to evaluate person success based on the type(vague/non-vague) of claims and successfully achieved claims
+- Metrics to evaluate person success based on the type(vague/non-vague) of claims and successfully achieved claims, endorsements given by people or companies for the world leader
 - Scraps posts made on social media and other outlets and extract the claims made from this sources 
-- Target different industries and their heads/leaders i.e. FDA and how they are allowing so many banned substances in our foods, sports e.t.c
+- Target different industries and their heads/leaders i.e. FDA and how they are allowing so many banned substances in our foods, sports e.t.c ClaimsHawkAI/Food ClaimsHawkAI/Climate

@@ -1,0 +1,64 @@
+Based on the LangChain documentation and the requirements of your ClaimsHawkAI app, here are the main concepts that will be most helpful:
+
+Document Loaders: To load transcripts from YouTube videos of politicians' speeches.
+
+Text Splitters: To split the loaded transcripts into manageable chunks for processing.
+
+Embedding Models: To create vector embeddings of the transcript chunks, which will be crucial for similarity comparisons and grouping similar claims.
+
+Vector Stores: To store and index the vector embeddings, allowing for efficient retrieval and similarity searches.
+
+Retrievers: To fetch relevant chunks of text based on queries, which will be useful when grouping similar claims.
+
+LLMs/Chat Models: To extract claims from the transcripts, differentiate between vague and specific claims, and potentially generate responses or analyses.
+
+Prompt Templates: To create effective prompts for the LLM to extract claims and classify them as vague or specific.
+
+Output Parsers: To structure the LLM output into a format that captures claims and their attributes (e.g., vague/specific, claim text).
+
+Chains: To combine various components (like document loading, embedding, retrieval, and LLM processing) into a cohesive workflow.
+
+Callbacks: For logging and monitoring the application's performance, which will be useful for tracking the ratio of vague to specific claims.
+
+Structured Output: To ensure claims are extracted and stored in a consistent, structured format, making it easier to analyze and compare them.
+
+These concepts align well with your MVP goals of extracting claims from transcripts, storing vector embeddings, grouping similar claims, and differentiating between vague and specific claims. They provide the necessary tools to build a pipeline that can process transcripts, extract and classify claims, and store them in a way that facilitates analysis and comparison.
+
+
+
+
+
+
+Based on the provided context, here are the main concepts from the LangChain docs that will help build the ClaimsHawkAI app:
+
+Document Loaders: To load transcripts from YouTube videos of politicians' speeches.
+
+Text Splitters: To split the loaded transcripts into chunks for processing.
+
+Embedding Models: To create vector embeddings of the transcript chunks.
+
+Vector Stores: To store and index the vector embeddings for efficient retrieval.
+
+Retrievers: To retrieve relevant chunks based on queries.
+
+LLMs/Chat Models: To extract claims from the transcripts and generate responses.
+
+Prompt Templates: To create prompts for the LLM to extract claims and differentiate between vague and specific claims.
+
+Output Parsers: To structure the LLM output into a format that captures claims and their attributes.
+
+Chains: To combine the various components into a workflow.
+
+Agents: Potentially useful for more complex reasoning about claims and validation.
+
+Tools: Could be used to integrate external data sources for claim validation.
+
+Callbacks: For logging and monitoring the application's performance.
+
+Evaluation: To assess the accuracy and effectiveness of claim extraction and classification.
+
+Streaming: To handle real-time processing of transcripts or claims.
+
+Structured Output: To ensure claims are extracted in a consistent, structured format.
+
+Retrieval Augmented Generation (RAG): To ground the LLM's responses in the retrieved transcript chunks.

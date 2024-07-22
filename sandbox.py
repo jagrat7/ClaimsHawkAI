@@ -1,18 +1,20 @@
-from youtube_transcript_api import YouTubeTranscriptApi
-from googleapiclient.discovery import build
-import pandas as pd
-import os
-from dotenv import load_dotenv
-import re, datetime
-import json
-load_dotenv()
+from database import engine, SessionLocal, Base
+from models import Video
 
-# Set up YouTube API client
-api_key = os.getenv('YOUTUBE_API_KEY')
-youtube = build('youtube', 'v3', developerKey=api_key)
-video_id='nFVUPAEF-sw'
+from models.Claim import *
 
 
-transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en-US'])
-print(transcript)
+Video.__table__.create(bind=engine, checkfirst=True)
+Claim.__table__.create(bind=engine, checkfirst=True)
+
+# Sample query to add a video
+db = SessionLocal()
+try:
+    new_video = Video(
+        id="assd2343q",
+    )
+    db.add(new_video)
+    db.commit()
+    print(f"Added video: {new_video.id}")
+finally:
+    db.close()
