@@ -1,12 +1,11 @@
-import os, sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from youtube_transcript_api import YouTubeTranscriptApi
 from googleapiclient.discovery import build
 import pandas as pd
 import os
 from dotenv import load_dotenv
-import re, datetime
+import re
+from datetime import datetime
 import json
 load_dotenv()
 
@@ -15,21 +14,6 @@ api_key = os.getenv('YOUTUBE_API_KEY')
 youtube = build('youtube', 'v3', developerKey=api_key)
 file_location = '../data/'
 # video_id=''
-
-def load_videos():
-    try:
-        with open(file_location+'videos.json', 'r') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {"videos": []}
-
-def save_videos(data):
-    with open(file_location+'videos.json', 'w') as f:
-        json.dump(data, f, indent=2)
-
-    if video['id'] == video_id:
-        video['processed'] = True       
-    save_videos(data)
 
 
 def get_video_info(video_id):
@@ -57,6 +41,8 @@ def get_captions(video_id):
         # if YouTubeTranscriptApi.get_transcript(video_id, languages=['en-US']):
         #     transcript = YouTubeTranscriptApi.get_transcript(video_id,languages=['en-US'])
         # else:
+        print("am i gettting in the youtube ")
+
         transcript = YouTubeTranscriptApi.get_transcript(video_id,preserve_formatting=True)
         return transcript
     except Exception as e:
@@ -143,46 +129,4 @@ def save_full_transcript(video_title, video_date, captions):
     print(f"Full transcript saved to {filename}")
     return filename
 
-
-# videos_data = load_videos()
-
-# for video in videos_data['videos']:
-#     video_id = video['id']
-    
-#     # Skip if already processed
-#     if video.get('processed', False):
-#         print(f"Skipping already processed video: {video['title']}")
-#         continue
-    
-#     captions = get_captions(video_id)
-#     video_title, video_date = get_video_info(video_id)
-    
-#     if captions:
-#         print(f"Processing Video: {video_title}")
-#         print(f"Video Date: {video_date}")
-#         df = save_to_csv(video_id, video_title, video_date, captions)
-#         save_full_transcript(video_title, video_date, captions)
-#         # print(df.head())  # Display the first few rows of the DataFrame
-        
-#         # Mark as processed
-#         mark_as_processed(video)
-#     else:
-#         print(f"Failed to retrieve captions for video ID: {video_id}")
-
-# # Save the updated video data
-# save_videos(videos_data)
-
-
-
-
-# captions = get_captions(video_id)
-# video_title, video_date = get_video_info(video_id)
-
-# if captions:
-#     print(f"Video Title: {video_title}")
-#     print(f"Video Date: {video_date}")
-#     df = save_to_csv(video_id, video_title, video_date, captions)
-#     save_full_transcript(video_title, video_date, captions)
-#     print(df.head())  # Display the first few rows of the DataFrame
-# else:
-#     print("Failed to retrieve captions.")
+print('hello')

@@ -14,7 +14,7 @@ from database.database import Base
 class Claim(Base):
     __tablename__ = "claims"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True) 
     speaker = Column(String)
     claim = Column(String)
     timestamp = Column(String)
@@ -28,3 +28,18 @@ class Claim(Base):
 
     def __str__(self) -> str:
             return f"Claim(speaker={self.speaker}, claim={self.claim}, timestamp={self.timestamp}, measurable={self.measurable}, analysis={self.analysis}, quote={self.quote})"
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'speaker': self.speaker,
+            'claim': self.claim,
+            'timestamp': self.timestamp,
+            'measurable': self.measurable,
+            'analysis': self.analysis,
+            'quote': self.quote,
+            'video_id': self.video_id,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at
+    }
+
