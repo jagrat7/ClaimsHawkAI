@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from database.database import Base
+from pgvector.sqlalchemy import Vector
 # class Claim:
 #     def __init__(self, speaker:str, claim:str, timestamp:str, measurable:bool, analysis:str,quote:str)->None:
 #         self.speaker = speaker
@@ -24,6 +25,7 @@ class Claim(Base):
     video_id = Column(String, ForeignKey("videos.id"))
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
+    embedding = Column(Vector(1536))
     video = relationship("Video", back_populates="claims")
 
     def __str__(self) -> str:

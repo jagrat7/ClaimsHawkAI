@@ -2,6 +2,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.document_loaders import TextLoader
 from langchain.output_parsers import PydanticOutputParser
+from langchain_openai import OpenAIEmbeddings
 from pydantic import BaseModel
 from typing import List
 import datetime
@@ -95,12 +96,21 @@ def get_claims(speaker,video: Video):
             timestamp=timestamp,
             measurable=claim.measurable,
             analysis=claim.analysis,
-            quote=' '
+            quote=' ',
+            embedding=get_embedding(claim.claim),
         )
         for claim in result.claims
     ]
     return claims
 
+def get_embedding(claim: Claim):
+    embeddings = OpenAIEmbeddings()
+    
+    # Generate embedding for the single claim
+    embedded_claim = embeddings.embed_query(claim.claim)
+    print("got embeddings for {claim.claim}",embedded_claim[:2])
+    
+    return embedded_claim
 
 # def test():
 #     file_path = "../data/President_Bidens_State_of_the_Union_Address_2024-03-08T034913Z.txt"

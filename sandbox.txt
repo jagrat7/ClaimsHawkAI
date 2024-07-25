@@ -1,21 +1,9 @@
-Can we talk about the state of docs? 🤔
+With Trump almost getting shot there have been a lot questions that are being asked. The question I would like to discus today is how social media is playing a factor in it, particularly short form content. 
 
 
 
-Lately, I've noticed a rise in more thorough and detailed documentations for software products. While this is generally a positive advancement, I believe that sometimes less could be more. In an attempt to cover every possible detail about the product, it has become difficult to find simple information. 
+With the raise of short form content within minutes can 10 different people validating or promoting a ideals and frustration of a person that is so far from/occur such few times in the real world that it leads to a warped view of the world  which can lead people to develop extreme emotions. The social media 'algorithm' seems like it promates increasingly extremist views , alough it might just be human brain that interpret it that way. but the 'algorithm' definatly does its part in promating more of the content a user like, leading a very homogeneous source of information. which in turn leads to a very one side view of the world.
 
 
 
-The first two images show the docs of Youtube API and Langchain. Both have very detailed and thought out documentations. However, it's very intimidating to look at for the first time and can be difficult to figure out how achieve your objective with the software. To give an example I was trying figure out how to chain prompts in LangChain but after a few minutes clicking through different links I turned to the search tab for an answers, picture 3. However the problem with search tabs for docs is that they seem to be mostly keywords searches and hence not very helpful. Youtube's search however seemed to have some semantic search capabilities (here i tried to search how to get the duration from a video) but even then the success rate of the results was not very good. 
-
-
-
-One of the strategies I have seen to remedy this problem are quickstart tutorials where they guide you through the main features of the software product and provide links to further explore a feature. This solution comes with its own challenges and might not possible for certain products. However with boom of AI and LLMs there seems to obvious solution for this, RAG based chatbots! These chatbots which are connected to the data in docs can hopefully provide better answers to query by the user. The few examples I have seen of this is Amazon Q on AWS which is pretty good tbh and the now the beta chat feature in the google docs. 
-
-
-
-I just wonder why chatbots are not being implemented for companies that have much less codebase and documentations compared to big tech companies. Is it just a matter of cost or is there something else I am missing? 
-
-
-
-#documentation #software #userexperience #softwareengineers #builders #coders #docs #AI
+The naive solution to this would be to make social media algorithm more diverse and have it recommend user a varity of content but this would make the algorithm inherently worse because now it is not recommending what the user. I feel like there is some middle ground that companies should find in deciding there recommendations.

@@ -1,8 +1,9 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import select,inspect
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from database.database import SessionLocal, engine
+from database.database import SessionLocal, create_tables,engine
 from models.Video import Video
 from models.Claim import Claim
 from pydantic import BaseModel
@@ -12,16 +13,20 @@ from services.ClaimExtractor import ClaimExtractor
 from services.VideoServices import VideoServices
 from typing import Optional
 
-
 app = FastAPI()
 
 # Dependency to get the database session
 def get_db():
     db = SessionLocal()
     try:
+        inspector = inspect(engine)
+        if not inspector.has_table("videos") or not inspector.has_table("claims"):
+            create_tables()
+            print("Tables created successfully")
         yield db
     finally:
         db.close()
+
 
 class VideoInput(BaseModel):
     id: str
@@ -40,6 +45,7 @@ class ClaimOutput(BaseModel):
 
     class Config:
         from_attributes = True
+
 class VideoOutput(BaseModel):
     id: str
     title: Optional[str] = None
@@ -52,7 +58,6 @@ class VideoOutput(BaseModel):
     class Config:
         from_attributes = True
 
-
 @app.post("/videos/", response_model=VideoInput)
 def create_video(video: VideoInput, db: Session = Depends(get_db)):
     db_video = Video(id=video.id, processed=False)
@@ -63,19 +68,19 @@ def create_video(video: VideoInput, db: Session = Depends(get_db)):
 
 @app.get("/videos/{video_id}", response_model=VideoInput)
 def get_video(video_id: str, db: Session = Depends(get_db)):
-    db_video = db.query(Video).filter(Video.id == video_id).first()
+    db_video = db.scalars(select(Video).filter(Video.id == video_id)).first()
     if db_video is None:
         raise HTTPException(status_code=404, detail="Video not found")
     return db_video 
 
 @app.get("/videos/", response_model=List[VideoOutput])
 def get_all_videos(db: Session = Depends(get_db)):
-    db_videos = db.query(Video).all()
-    return [VideoOutput.from_orm(video) for video in db_videos]
+    db_videos = db.scalars(select(Video)).all()
+    return [VideoOutput.model_validate(video) for video in db_videos]
 
 @app.post("/extract_claims/{video_id}")
 def extract_claims(video_id: str, db: Session = Depends(get_db)):
-    video = db.query(Video).filter(Video.id == video_id).first()
+    video = db.scalars(select(Video).filter(Video.id == video_id)).first()
     if video is None:
         raise HTTPException(status_code=404, detail="Video not found")
 
@@ -87,7 +92,6 @@ def extract_claims(video_id: str, db: Session = Depends(get_db)):
     claims = extractor.extract_claims("", video)   
     counter=0 
     for claim in claims:  
-        # db_claim = Claim(**claim.dict(), video_id=video_id) 
         print(claim.__str__())
         db_claim = Claim(speaker=claim.speaker,
             claim=claim.claim,
@@ -102,7 +106,5 @@ def extract_claims(video_id: str, db: Session = Depends(get_db)):
 
 @app.get("/claims/{video_id}", response_model=List[ClaimOutput])
 def read_claims(video_id: str, db: Session = Depends(get_db)):
-    claims = db.query(Claim).filter(Claim.video_id == video_id).all()
+    claims = db.scalars(select(Claim).filter(Claim.video_id == video_id)).all()
     return [ClaimOutput.model_validate(claim.__dict__) for claim in claims]
-
- 
