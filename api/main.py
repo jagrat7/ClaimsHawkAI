@@ -11,14 +11,14 @@ from typing import List
 from datetime import datetime
 from services.ClaimExtractor import ClaimExtractor
 from services.VideoServices import VideoServices
-from typing import Optional
+from typing import Optional 
 
 app = FastAPI()
-
+ 
 # Dependency to get the database session
 def get_db():
     db = SessionLocal()
-    try:
+    try: 
         inspector = inspect(engine)
         if not inspector.has_table("videos") or not inspector.has_table("claims"):
             create_tables()
@@ -54,11 +54,11 @@ class VideoOutput(BaseModel):
     date_published: Optional[datetime] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
-
+ 
     class Config:
-        from_attributes = True
+        from_attributes = True 
 
-@app.post("/videos/", response_model=VideoInput)
+@app.post("/videos/", response_model=VideoInput) 
 def create_video(video: VideoInput, db: Session = Depends(get_db)):
     db_video = Video(id=video.id, processed=False)
     db.add(db_video)
@@ -70,11 +70,11 @@ def create_video(video: VideoInput, db: Session = Depends(get_db)):
 def get_video(video_id: str, db: Session = Depends(get_db)):
     db_video = db.scalars(select(Video).filter(Video.id == video_id)).first()
     if db_video is None:
-        raise HTTPException(status_code=404, detail="Video not found")
+        raise HTTPException(status_code=404, detail="Video not found")       
     return db_video 
-
+ 
 @app.get("/videos/", response_model=List[VideoOutput])
-def get_all_videos(db: Session = Depends(get_db)):
+def get_all_videos(db: Session = Depends(get_db)): 
     db_videos = db.scalars(select(Video)).all()
     return [VideoOutput.model_validate(video) for video in db_videos]
 

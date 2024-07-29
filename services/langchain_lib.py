@@ -70,7 +70,6 @@ chain = (
     | llm
     | parser
 )
-
 def get_claims(speaker,video: Video):
     document = load_document(video.captions_location)
     text=document[0].page_content
@@ -103,12 +102,11 @@ def get_claims(speaker,video: Video):
     ]
     return claims
 
-def get_embedding(claim: Claim):
+def get_embedding(claim: str)-> List[float]:
     embeddings = OpenAIEmbeddings()
     
     # Generate embedding for the single claim
-    embedded_claim = embeddings.embed_query(claim.claim)
-    print("got embeddings for {claim.claim}",embedded_claim[:2])
+    embedded_claim = embeddings.embed_query(claim)
     
     return embedded_claim
 

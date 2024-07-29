@@ -1,22 +1,4 @@
 services:
-  # db:
-  #   build: 
-  #     context: ./database
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   environment:
-  #     POSTGRES_PASSWORD: passadmin
-  #     POSTGRES_DB: ch
-  #     POSTGRES_USER: admin
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data 
-  #   ports:
-  #     - 5432:5432
-  #   command: >
-  #     bash -c "
-  #       echo \"CREATE EXTENSION IF NOT EXISTS vector;\" > /docker-entrypoint-initdb.d/init.sql &&
-  #       docker-entrypoint.sh postgres
-  #     "
   postgres-db:
     build:
       context: ./database
@@ -34,10 +16,6 @@ services:
     ports:
       - "5432:5432"
 
-
-
-    
-    
   adminer:
     image: adminer
     restart: always
