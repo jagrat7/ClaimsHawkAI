@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model claims {
+  id         Int                    @id @default(autoincrement())
+  speaker    String?                @db.VarChar
+  claim      String?                @db.VarChar
+  timestamp  String?                @db.VarChar
+  measurable Boolean?
+  analysis   String?                @db.VarChar
+  quote      String?                @db.VarChar
+  video_id   String?                @db.VarChar
+  created_at DateTime?              @default(now()) @db.Timestamp(6)
+  updated_at DateTime?              @db.Timestamp(6)
+  embedding  Unsupported("vector")?
+  videos     videos?                @relation(fields: [video_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([id], map: "ix_claims_id")
+}
+
+model videos {
+  id                String    @id @db.VarChar
+  title             String?   @db.VarChar
+  processed         Boolean?
+  captions_location String?   @db.VarChar
+  date_published    DateTime? @db.Timestamp(6)
+  created_at        DateTime? @default(now()) @db.Timestamp(6)
+  updated_at        DateTime? @db.Timestamp(6)
+  speaker           String?   @db.VarChar(255)
+  claims            claims[]
+
+  Speaker Speaker[]
+}
+model Speaker {
+  id        Int      @id @default(autoincrement())
+  name      String
+  bio       String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  videos    videos[]
+}

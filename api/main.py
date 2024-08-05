@@ -30,6 +30,7 @@ def get_db():
 
 class VideoInput(BaseModel):
     id: str
+    speaker:str
 
 class ClaimOutput(BaseModel):
     id: int
@@ -48,6 +49,7 @@ class ClaimOutput(BaseModel):
 
 class VideoOutput(BaseModel):
     id: str
+    speaker: Optional[str] = None
     title: Optional[str] = None
     processed: bool
     captions_location: Optional[str] = None
@@ -60,13 +62,14 @@ class VideoOutput(BaseModel):
 
 @app.post("/videos/", response_model=VideoInput) 
 def create_video(video: VideoInput, db: Session = Depends(get_db)):
-    db_video = Video(id=video.id, processed=False)
+    db_video = Video(id=video.id, speaker= video.speaker, processed=False)
+    VideoServices(db_video).get_video_meta(db_video.id)
     db.add(db_video)
     db.commit()
     db.refresh(db_video)
     return db_video
 
-@app.get("/videos/{video_id}", response_model=VideoInput)
+@app.get("/videos/{video_id}", response_model=VideoOutput)
 def get_video(video_id: str, db: Session = Depends(get_db)):
     db_video = db.scalars(select(Video).filter(Video.id == video_id)).first()
     if db_video is None:
@@ -89,7 +92,7 @@ def extract_claims(video_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Failed to retrieve captions")
     
     extractor = ClaimExtractor(captions_location)
-    claims = extractor.extract_claims("", video)   
+    claims = extractor.extract_claims(video.speaker, video)    
     counter=0 
     for claim in claims:  
         print(claim.__str__())

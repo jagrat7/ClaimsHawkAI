@@ -16,6 +16,7 @@ class Video(Base):
 
     id = Column(String, primary_key=True)
     title = Column(String)
+    speaker = Column(String)
     processed = Column(Boolean, default=False)
     captions_location = Column(String)
     date_published = Column(DateTime)
