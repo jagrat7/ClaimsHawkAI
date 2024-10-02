@@ -2,6 +2,11 @@
 **Work Progress** - alot of things still need to be completed and tidied up. <br>
 A app the takes transcripts from politicians and world leader speechs and use ai model(from hugging face) to get the claims made by them i.e a politicians says "I will reduce the unemployment rate" or "I will reduce the waste produced by the company". It also provides ways to validate claim with data i.e "employment rate after election" , "waste volume after claim"
 
+## Tech Stack
+- [Next.js](https://nextjs.org/docs) - Fullstack framework for React. Used with App Router.
+- [Prisma](https://www.prisma.io/) with SQLite for database ORM, there is dockerfile for postgresql.
+- [FastAPI](https://fastapi.tiangolo.com/) for AI python microservice
+- [Langchain](https://python.langchain.com/v0.2/docs/introduction/) for AI dev.
 ## How to run
 
 ### Setup the environment
