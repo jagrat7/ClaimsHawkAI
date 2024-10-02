@@ -1,5 +1,5 @@
 # ClaimsHawkAI
-**Work Progress** - alot of things still need to be completed and tidied up. 
+**Work Progress** - alot of things still need to be completed and tidied up. <br>
 A app the takes transcripts from politicians and world leader speechs and use ai model(from hugging face) to get the claims made by them i.e a politicians says "I will reduce the unemployment rate" or "I will reduce the waste produced by the company". It also provides ways to validate claim with data i.e "employment rate after election" , "waste volume after claim"
 
 ## How to run
