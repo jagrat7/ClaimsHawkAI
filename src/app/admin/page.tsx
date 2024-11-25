@@ -1,16 +1,14 @@
-import Videolist from "@/components/videolist"
+import VideoList from "@/components/videolist"
 import Link from "next/link"
 import { Suspense } from "react"
-// export const dynamic = 'force-dynamic'
 
-export default async function admin() {
+export default function AdminPage() {
+  return (
+    <div className="text-center pt-32 px-5">
+      <h1 className="text-4xl md:text-5xl font-bold mb-5">Admin panel</h1>
 
-
-  return <div className="text-center pt-32 px-5">
-    <h1 className="text-4xl md:text-5xl font-bold mb-5">Admin panel</h1>
-
-    <h2 className="text-3xl text-left md:text-3xl font-bold mb-5 mt-9">Videos</h2>
-    <Link
+      <h2 className="text-3xl text-left md:text-3xl font-bold mb-5 mt-9">Videos</h2>
+      <Link
         href="/addvideo"
         className="flex items-center mb-5 text-black hover:underline"
       >
@@ -28,9 +26,8 @@ export default async function admin() {
         </svg>
         Add New Video
       </Link>
-    <Suspense fallback={<div>Loading...</div>}>
-      <Videolist></Videolist>
-    </Suspense>
-  </div>
+      <VideoList />
+    </div>
+  )
 }
- 
+
