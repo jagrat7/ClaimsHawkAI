@@ -9,10 +9,9 @@ export default async function VideoPage({
 }: {
   params: { id: string };
 }) {
-  const data = await prisma.videos.findUnique({ where: { id: params.id } });
-  if (!data) {
-    notFound();
-  }
+
+  const response = await fetch(`http://127.0.0.1:8000/videos/${params.id}` ,{ next: { revalidate: 1 } });
+  const data = await response.json();
   const claims = await prisma.claims.findMany({
     where: { video_id: params.id },
   });

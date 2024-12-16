@@ -1,7 +1,5 @@
 import { createVideo } from "@/actions/actions";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from 'next/navigation';
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
 export default async function AdddVideo() {
   // const {isAuthenticated} = getKindeServerSession();
@@ -35,7 +33,6 @@ export default async function AdddVideo() {
         </button>
       </form>
 
-      <LogoutLink><button>Logout</button></LogoutLink>
       {/* {formState?.success && (
         <div className="text-green-600 text-center mt-4">
           Video successfully created!

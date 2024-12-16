@@ -18,10 +18,8 @@ export async function createVideo(formData: FormData) {
     }),
   });
   console.log(response);
-  const {isAuthenticated} = getKindeServerSession();
-  if (! (await isAuthenticated()) ) {
-    redirect("/api/auth/login?redirect_url=/addvideo");
-  }
+
+  redirect("/admin");
   // USALLY write straight to db here
   // await prisma.videos.create({
   //   data:{

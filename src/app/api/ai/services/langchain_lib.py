@@ -16,8 +16,11 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
 
+if not api_key:
+    raise ValueError("OpenAI API key not found in environment variables")
+
 # Initialize the LLM
-llm = ChatOpenAI( api_key=api_key, temperature=0.1) #model_name='gpt-4o',
+llm = ChatOpenAI(api_key=api_key, temperature=0.1) #model_name='gpt-4o',
 
 
 # Define Pydantic models
@@ -71,36 +74,39 @@ chain = (
     | parser
 )
 def get_claims(speaker,video: Video):
-    document = load_document(video.captions_location)
-    text=document[0].page_content
-    print("loaded document into text")
-    # Extract speaker
-    if not speaker:
-        speaker = extract_speaker(video.captions_location)
-    else:
-        speaker = speaker
-    print("extracted speaker",speaker)
-
-    timestamp = datetime.datetime.now().isoformat()
     try:
-        result = chain.invoke({"text": text})
-    except Exception as e:
-        print(f"Error extracting claims: {str(e)}")
+        document = load_document(video.captions_location)
+        text=document[0].page_content
+        print("loaded document into text")
+        
+        # Extract speaker
+        if not speaker:
+            speaker = extract_speaker(video.captions_location)
+        print("extracted speaker",speaker)
 
-    # print("got result",result)
-    claims = [
-        Claim(
-            speaker=speaker,
-            claim=claim.claim,
-            timestamp=timestamp,
-            measurable=claim.measurable,
-            analysis=claim.analysis,
-            quote=' ',
-            embedding=get_embedding(claim.claim),
-        )
-        for claim in result.claims
-    ]
-    return claims
+        timestamp = datetime.datetime.now().isoformat()
+        
+        # Extract and analyze claims
+        result = chain.invoke({"text": text})
+        
+        # Create claim objects
+        claims = [
+            Claim(
+                speaker=speaker,
+                claim=claim.claim,
+                timestamp=timestamp,
+                measurable=claim.measurable,
+                analysis=claim.analysis,
+                quote=' ',
+                # embedding=get_embedding(claim.claim),
+            )
+            for claim in result.claims
+        ]
+        return claims
+        
+    except Exception as e:
+        print(f"Error in get_claims: {str(e)}")
+        return []  # Return empty list instead of None to avoid null reference errors
 
 def get_embedding(claim: str)-> List[float]:
     embeddings = OpenAIEmbeddings()

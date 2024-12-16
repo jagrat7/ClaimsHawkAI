@@ -25,7 +25,7 @@ class Claim(Base):
     video_id = Column(String, ForeignKey("videos.id"))
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
-    embedding = Column(Vector(1536))
+    # embedding = Column(Vector(1536))
     video = relationship("Video", back_populates="claims")
 
     def __str__(self) -> str:

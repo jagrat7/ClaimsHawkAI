@@ -1,4 +1,3 @@
-
 from youtube_transcript_api import YouTubeTranscriptApi
 from googleapiclient.discovery import build
 import pandas as pd
@@ -12,7 +11,9 @@ load_dotenv()
 # Set up YouTube API client
 api_key = os.getenv('YOUTUBE_API_KEY')
 youtube = build('youtube', 'v3', developerKey=api_key)
-file_location = '../data/'
+
+# Change the file_location to use absolute path
+file_location = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data/')
 # video_id=''
 
 
@@ -35,6 +36,26 @@ def get_video_info(video_id):
     except Exception as e:
         print(f"Error fetching video info: {str(e)}")
         return "Error fetching title", "Error fetching date"
+
+def save_full_transcript(video_title, video_date, captions):
+    try:
+        # Create the data directory if it doesn't exist
+        os.makedirs(file_location, exist_ok=True)
+        
+        safe_title = sanitize_filename(f"{video_title}_{video_date}")
+        print("Creating the transcript file.....")
+        filename = os.path.join(file_location, f"{safe_title}.txt")
+        print("filename:", filename)
+        
+        full_transcript = " ".join([remove_sound_effects(entry['text']) for entry in captions])
+        
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(full_transcript)
+        print(f"Successfully saved transcript to {filename}")
+        return filename
+    except Exception as e:
+        print(f"Error saving full transcript: {str(e)}")
+        return None
 
 def get_captions(video_id):
     try:
@@ -117,16 +138,5 @@ def save_to_csv2(video_id, video_title, video_date, captions):
     print(f"Captions saved to {filename}")
     return df
 
-def save_full_transcript(video_title, video_date, captions):
-    safe_title = sanitize_filename(f"{video_title}_{video_date}")
-    filename = file_location+f"{safe_title}.txt"
-    
-    full_transcript = " ".join([remove_sound_effects(entry['text']) for entry in captions])
-    
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(full_transcript)
-    
-    print(f"Full transcript saved to {filename}")
-    return filename
 
 print('hello')
