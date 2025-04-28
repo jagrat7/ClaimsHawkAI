@@ -36,7 +36,7 @@ export function GenerateButton ({ videoId }: { videoId: string })
     <div>
       <button
         onClick={handleClick}
-        className="mt-5 bg-black text-white px-4 py-2 rounded"
+        className="mt-5 bg-black text-white px-4 py-2 rounded-sm"
         disabled={isGenerating}
       >
         {isGenerating ? 'Generating...' : 'Generate Claims'}

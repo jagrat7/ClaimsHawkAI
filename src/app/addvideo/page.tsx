@@ -18,17 +18,17 @@ export default async function AdddVideo() {
           type="text"
           name="id"
           placeholder="Youtube video ID for new video"
-          className="border rounded px-3 h-10"
+          className="border rounded-sm px-3 h-10"
           required
         />
         <input
           type="text"
           name="speaker"
           placeholder="Speaker for new video"
-          className="border rounded px-3 h-10"
+          className="border rounded-sm px-3 h-10"
           required
         />
-        <button className="h-10 bg-black px-5 rounded text-white">
+        <button className="h-10 bg-black px-5 rounded-sm text-white">
           Submit
         </button>
       </form>
