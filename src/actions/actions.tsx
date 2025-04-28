@@ -1,6 +1,6 @@
 "use server"; //creates server actions
 import { revalidatePath } from "next/cache";
-import prisma from "@/utils/db";
+import {prisma} from "@/server/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 

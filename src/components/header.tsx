@@ -1,8 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import logo from "../../public/images/claimshawk_logo_with_transparent_background_more_robotic.jpeg";
+import { cn } from "@/lib/utils";
 const navLinks = [
   {
     href: "/",
@@ -12,40 +21,45 @@ const navLinks = [
     href: "/admin",
     label: "Admin",
   },
-
 ];
 
 export default function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="flex justify-between items-center py-4 px-7 border-b">
-      <Link href="/">
-        <Image
-          src="https://bytegrad.com/course-assets/youtube/example-logo.png"
-          alt="Logo"
-          className="w-[35px] h-[35px]"
-          width="35"
-          height="35"
-        />
-      </Link>
-
-      <nav>
-        <ul className="flex gap-x-5 text-[14px]">
+    <header className="flex justify-center items-center py-4 px-7 border-b">
+      <NavigationMenu>
+        <NavigationMenuList className="px-4">
           {navLinks.map((link) => (
-            <li key={link.href}>
+            <NavigationMenuItem key={link.href}>
               <Link
-                className={`${
-                  pathname === link.href ? "text-zinc-900" : "text-zinc-400"
-                }`}
                 href={link.href}
+                legacyBehavior
+                passHref
               >
-                {link.label}
+                <NavigationMenuLink
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "text-lg font-medium",
+                    pathname === link.href && "text-primary"
+                  )}
+                  active={pathname === link.href}
+                >
+                  {link.label}
+                </NavigationMenuLink>
               </Link>
-            </li>
+            </NavigationMenuItem>
           ))}
-        </ul>
-      </nav>
+        </NavigationMenuList>
+      </NavigationMenu>
     </header>
   );
 }
+// /*
+// <Link href="/" className="flex items-center gap-2">
+// <Avatar>
+//   <AvatarImage src={logo.src} alt="Logo" />
+//   <AvatarFallback>CH</AvatarFallback>
+// </Avatar>
+// {/* <span className="font-semibold text-lg">ClaimsHawk</span> */}
+// // </Link>

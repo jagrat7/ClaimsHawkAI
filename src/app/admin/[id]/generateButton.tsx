@@ -1,4 +1,5 @@
 "use client"
+import { Button } from '@/components/ui/button';
 import { revalidatePath } from 'next/cache';
 import { useState } from 'react';
 
@@ -34,13 +35,13 @@ export function GenerateButton ({ videoId }: { videoId: string })
 
   return (
     <div>
-      <button
+      <Button
         onClick={handleClick}
         className="mt-5 bg-black text-white px-4 py-2 rounded-sm"
         disabled={isGenerating}
       >
         {isGenerating ? 'Generating...' : 'Generate Claims'}
-      </button>
+      </Button>
       {generationError && (
         <p className="text-red-500 mt-2">{generationError}</p>
       )}
