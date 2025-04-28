@@ -1,5 +1,5 @@
 import Upvotebut from "@/components/upvotebut";
-import prisma from "@/utils/db";
+import {prisma} from "@/server/db";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { GenerateButton } from "./generateButton";
