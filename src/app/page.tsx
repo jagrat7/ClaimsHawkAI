@@ -80,8 +80,8 @@ export default async function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background/50" />
         
         {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center max-w-6xl">
-          <div className="relative w-[250px] h-[250px] mb-8">
+        <div className="relative z-10 container mx-auto px-4 flex flex-col items-center text-center ">
+          <div className="relative w-full aspect-square max-w-[250px] md:max-w-[300px] lg:max-w-[350px] mb-8">
             <Image
               src={logo}
               alt="ClaimsHawk Logo"
