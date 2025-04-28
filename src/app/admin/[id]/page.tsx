@@ -4,11 +4,12 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { GenerateButton } from "./generateButton";
 
-export default async function VideoPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function VideoPage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
 
   const response = await fetch(`http://127.0.0.1:8000/videos/${params.id}` ,{ next: { revalidate: 1 } });
   const data = await response.json();
